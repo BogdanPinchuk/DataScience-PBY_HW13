@@ -1,9 +1,12 @@
 import sqlite3
 import kagglehub
 import pandas as pd
+import apps.reporter as rpt
 from pandas import DataFrame
 from kagglehub import KaggleDatasetAdapter
 from pathlib import Path
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
+
 
 def download_and_extract_from_kagglehub(ds_path: str, ds_file_name: str, db_file_name: str) -> DataFrame | None:
     """
@@ -39,3 +42,27 @@ def download_and_extract_from_kagglehub(ds_path: str, ds_file_name: str, db_file
         conn.close()
 
     return ds_data
+
+def calc_class_metrics(y_test, y_pred):
+    rp = rpt.Reporter()
+    rp.tolerance = 4
+
+    # Confusion Matrix
+    cm = confusion_matrix(y_test, y_pred)
+    rp.add_item("Confusion Matrix", rp.format_matrix(cm))
+    # Accuracy
+    accuracy = accuracy_score(y_test, y_pred)
+    rp.add_item("Accuracy\n(Точність)", rp.format_value(accuracy))
+    # Precision
+    precision = precision_score(y_test, y_pred)
+    rp.add_item("Precision\n(Влучність)", rp.format_value(precision))
+    # Recall
+    recall = recall_score(y_test, y_pred)
+    rp.add_item("Recall\n(Повнота)", rp.format_value(recall))
+    # F1-score
+    f1 = f1_score(y_test, y_pred)
+    rp.add_item("F1-score", rp.format_value(f1))
+
+    # Print results
+    rp.print_pd_report(f"Метрики")
+
