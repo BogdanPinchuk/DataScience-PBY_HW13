@@ -85,7 +85,7 @@ def calc_regres_metrics(y_test, y_pred):
     rp.add_item("RMSE", rp.format_value(rmse))
     # R2 - coefficient of determination
     r2 = r2_score(y_test, y_pred)
-    rp.add_item("R2\n(коефіцієнт детермінації)", rp.format_value(r2))
+    rp.add_item("R²\n(коефіцієнт детермінації)", rp.format_value(r2))
 
     # Print results
     rp.print_pd_report(f"Метрики")
