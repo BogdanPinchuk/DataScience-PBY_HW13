@@ -2,7 +2,7 @@ import jinja2
 import numpy as np
 import pandas as pd
 from pandas.io.formats.style import Styler
-from IPython.core.display_functions import display
+from IPython.display import display
 
 
 class Reporter:
